@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-        stage('Run Kubernetes Health Check') {
+        stage('Run the Kubernetes Health Check') {
             steps {
                 sh 'chmod +x kube-check.sh && ./kube-check.sh'
             }
