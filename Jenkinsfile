@@ -6,16 +6,16 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-username/Devops-project.git'
+                git 'https://github.com/priyankakanna/Demo-Pipeline.git'
             }
         }
 
         stage('Set Minikube Docker Env') {
             steps {
                 script {
-                    // This sets the env for all future shell steps
+                    // This sets up Docker to use Minikube's Docker daemon
                     sh 'eval $(minikube docker-env)'
                 }
             }
@@ -27,23 +27,22 @@ pipeline {
             }
         }
 
-        stage('Load Docker Image to Minikube') {
+        stage('Load Image into Minikube') {
             steps {
                 sh 'minikube image load $IMAGE_NAME'
             }
         }
 
-        stage('Deploy with Helm') {
+        stage('Deploy to Kubernetes with Helm') {
             steps {
                 sh 'helm upgrade --install flask-app helm/flask-chart'
             }
         }
 
-        stage('K8s Checks') {
+        stage('Run Kubernetes Health Check') {
             steps {
                 sh 'chmod +x kube-check.sh && ./kube-check.sh'
             }
         }
     }
 }
-
